@@ -1,6 +1,6 @@
 require_relative "game_helper"
 
-def count_element(element,array)
+def count_element(element,array) # returns the number of times an element is in an array
 	counts = Hash.new 0
 	array.each do |el|
  		counts[el] += 1
@@ -9,16 +9,27 @@ def count_element(element,array)
 end
 
 
-def print_board(board)
- 	print "#{board[0]}\n"
- 	print "#{board[1]}\n"
- 	print "#{board[2]}\n"
+def print_board(board) 	# prints the current board to the console
+ 	board.length.times do |count|
+ 		print "\n"
+ 		board.length.times do |count2|
+ 			print "| #{board[count][count2]} "
+ 		end
+ 		print " |\n"
+ 	end
+ 	return true
 end 
 
-def blank_board()
-	return [["_","_","_"],
-			["_","_","_"],
-			["_","_","_"]];
+def generate_board(length,placeholder)
+	board = []
+	length.times do |n|
+		row = []
+		length.times do |m|
+			row << placeholder.to_s
+		end
+		board << row
+	end
+	return board
 end
 
 def moves_left(board)
@@ -31,13 +42,6 @@ def moves_left(board)
 	end
 	return count
 end
-
-def game_won?(board)
-	won = false
-	won = check_colomns(board,"win",nil)||check_rows(board,"win",nil)||check_diagonals(board,"win",nil)               
-	return won
-end
-
 
 def legal?(board,y,x)
 	if board[y][x] == "_"
@@ -78,7 +82,7 @@ def get_players_move(board)
 	return responce
 end
 
-def make_move(board, player, space)
+def make_move(board, player, space) # to be replaced in board class
 	x = space[1]; y = space[0]
 	board[y][x] = player
 	return board

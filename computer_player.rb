@@ -1,198 +1,98 @@
 require_relative "game_helper"
 require_relative "computer_player"
 
-def check_colomns(board,type,player)
-
+def check_for(player,set,set_index,length,type=nil) # tested
 	if type == "win"
-		won = [false]
-		length = board.length
-		
-		length.times do |x|
-			check = []
-			length.times do |y|
-				
-				check<<board[y][x]
-			end	
-			if ((check[0]!="_")&&(check[0]==check[1] && check[1]==check[2]))
-				won = [true,check[0]]
-			end
-		end	
-		return won
-
-	elsif type == "could_win"
-		answer = [false]
-		length = board.length
-		length.times do |x|
-			check = []
-			check_index = []
-			length.times do |y|
-				check<<board[y][x]
-				check_index<<[y,x]
-				if player == "x"
-					if (count_element("x",check)==2&&check.include?("_"))
-						index = check.index("_")
-						answer = [true,check_index[index]]	 
-					end
-				elsif player == "o"
-					if (count_element("o",check)==2&&check.include?("_"))
-						index = check.index("_")
-						answer = [true,check_index[index]] 
-					end		
-				end
-			end	
-		end	
-
+		if (count_element(player,set)==(length)&&set.include?("_") == false)
+			answer = true
+		end
 		return answer
 	else
-		return "error"	
+		if (count_element(player,set)==(length-1)&&set.include?("_"))
+			index = set.index("_")
+			answer = set_index[index] 
+		end	
+		return answer
 	end
 end
 
-
-def check_rows(board,type,player)
-	if type == "win"
-		won = [false]
-		length = board.length
-		
-		length.times do |x|
-			check = []
-			length.times do |y|
-				
-				check<<board[x][y]
-			end	
-			if ((check[0]!="_")&&(check[0]==check[1] && check[1]==check[2]))
-				won = [true,check[0]]
-			end
-		end	
-		return won
-
-	elsif type == "could_win"
-		length = board.length
-		check = []
-		check_index = []
-		answer = [false]
-		length = board.length
-		length.times do |x|
-			check = []
-			check_index = []
-			length.times do |y|
-				check<<board[x][y]
-				check_index<<[x,y]
-			
-				if player == "x"
-					if (count_element("x",check)==2&&check.include?("_"))
-						index = check.index("_")
-						answer = [true,check_index[index]] 
-					end	
-				elsif player == "o"
-					if (count_element("o",check)==2&&check.include?("_"))
-						index = check.index("_")
-						answer = [true,check_index[index]]	 
-					end		
-				end
-			end	
-		end	
-		return answer
-	else
-		return "error"	
-	end
-
-end
-
-def check_diagonals(board,type, player)
-	if type == "win"
-		if ((board[0][0]!="_")&&(board[0][0]==board[1][1] && board[1][1]==board[2][2]))
-			return [true,board[0][0]]
-		elsif ((board[0][2]!="_")&&(board[0][2]==board[1][1] && board[1][1]==board[2][0]))
-			
-			return [true,board[0][0]]
+def could_win_diagonally?(player,how,board,type = nil) # tested
+	answer = false
+	length = board.length
+	set = []
+	set_index = []	
+	length.times do |n|
+		if how == "diagonal-left"
+			set<<board[n][-(n+1)]
+			set_index<<[n,length-(n+1)]
+		elsif how == "diagonal-right"
+			set<<board[n][n]
+			set_index<<[n,n]
 		else
-			return [false]		
+			return "attribute error in #could_win_diagonally"
 		end	
+	end	
+	if type == "win"
+		if (check_for(player,set,set_index,length,type)) != nil
+			answer = check_for(player,set,set_index,length,type)  # returns [player,set_index[index]] or false
+		end					
+	else
+		if (check_for(player,set,set_index,length)) != nil
+			answer = check_for(player,set,set_index,length)  # returns [player,set_index[index]] or false
+		end	
+	end
 
-	elsif type == "could_win"
-		check1 = [board[0][0],board[1][1],board[2][2]]
-		check2 = [board[0][2],board[1][1],board[2][0]]
-		if player == "x"
-			if (count_element("x",check1)==2&&check1.include?("_"))
-				index = check1.index("_")
-				if index == 0
-					return [true,[0,0]]
-				elsif index == 1
-					return [true,[1,1]]
-				elsif index == 2
-					return [true,[2,2]]
-				else			
-					return "error"
-				end
-			
-			elsif (count_element("x",check2)==2&&check2.include?("_"))
-				index = check2.index("_")
-				if index == 0
-					return [true,[0,2]]
-				elsif index == 1
-					return [true,[1,1]]
-				elsif index == 2
-					return [true,[2,0]]
-				else			
-					return "error"
-				end
-			else 
-				return [false]
-			end	
+	return answer		
+end
 
-		elsif player == "o"
-			if (count_element("o",check1)==2&&check1.include?("_"))
-				index = check1.index("_")
-				if index == 0
-					return [true,[0,0]]
-				elsif index == 1
-					return [true,[1,1]]
-				elsif index == 2
-					return [true,[2,2]]
-				else			
-					return "error"
-				end
-				
-			elsif (count_element("o",check2)==2&&check2.include?("_"))
-				index = check2.index("_")
-				if index == 0
-					return [true,[0,2]]
-				elsif index == 1
-					return [true,[1,1]]
-				elsif index == 2
-					return [true,[2,0]]
-				else			
-					return "error"
-				end	
-				
+def could_win_straight?(player,how,board,type=nil) # tested
+	answer = false
+	length = board.length
+	length.times do |x|
+		set = []
+		set_index = []
+	
+		length.times do |y|
+			if how == "vertically"
+				set<<board[y][x]
+				set_index<<[y,x]
+			elsif how == "horozontally"
+				set<<board[x][y]
+				set_index<<[x,y]	
 			else
-				return [false]		
-			end						
-		else
+				return "bad parameter in #could_win"
+			end			
 			
-		end		
-	else
-		
-	end
-
+			if type == "win"
+				if (check_for(player,set,set_index,length,type)) != nil
+					answer = check_for(player,set,set_index,length,type)  # returns [player,set_index[index]] or false
+				end
+			else
+				if (check_for(player,set,set_index,length)) != nil
+					answer = check_for(player,set,set_index,length)  # returns [player,set_index[index]] or false
+				end	
+			end		
+		end	
+	end	
+	return answer		
 end
 
-def could_win?(board, player)
-
-	check_diagonals(board,"could_win",player)
-	if check_diagonals(board,"could_win",player)[0]
-		return check_diagonals(board,"could_win",player)[1]
-
-	elsif check_colomns(board,"could_win",player)[0]
-		return check_colomns(board,"could_win",player)[1]
-
-	elsif check_rows(board,"could_win",player)[0]
-		return check_rows(board,"could_win",player)[1]
-				
+def could_win?(player,board, type=nil)
+	if could_win_straight?(player,"vertically",board,type) != false
+		return could_win_straight?(player,"vertically",board,type)
+	elsif could_win_straight?(player,"horozontally",board,type) != false
+		return could_win_straight?(player,"horozontally",board,type)
+	elsif could_win_diagonally?(player,"diagonal-left",board,type) != false
+		return could_win_diagonally?(player,"diagonal-left",board,type)
+	elsif could_win_diagonally?(player,"diagonal-right",board,type) != false
+		return could_win_diagonally?(player,"diagonal-right",board,type)	
 	else
-		return [false]
+		return false
 	end
+end
+
+def won?(player,board)
+	return could_win?(player,board,type = "win")
 end
 
 def next_available_space(board)
@@ -210,9 +110,34 @@ def next_available_space(board)
 end
 
 def center_available?(board)
-	if board[1][1] == "_"
-		return true	
-	else 
+	length = board.length
+	if length%2 != 0
+		if board[length/2][length/2] == "_"
+			return true	
+		else 
+			return false
+		end		
+	else
 		return false
-	end	
+	end
 end
+
+def sides_available(board)
+	length = board.length
+	cell_array = []
+	length.times do |y|
+		length.times do |x|
+			if (board[y][x] == "_")&&([y,x]!=[0,0]&&[y,x]!=[0,length-1]&&[y,x]!=[length-1,0]&&[y,x]!=[length-1,length-1]) 
+				cell_array << [y,x]
+			end
+		end
+	end
+	return cell_array
+end
+
+
+
+
+
+
+

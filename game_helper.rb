@@ -32,29 +32,35 @@ def generate_board(length,placeholder) # tested
 	return board
 end
 
-def safe_value?(coords,board) # tested
-	if coords.length == 2 &&
+def safe_value?(coords,board,placeholder) # tested
+	y = coords[0]; x = coords[1]
+	if x>=board.length&&y>=board.length
+		return false
+	elsif coords.length == 2 &&
 		coords[0] < board.length &&
 		coords[0] >= 0 &&
 		coords[1] < board.length &&
-		coords[1] >= 0	
+		coords[1] >= 0 &&board[y][x] == placeholder
 		return true
+	elsif x<board.length&&y<board.length&&
+		board[y][x] != placeholder
+		puts "that is an illegal move"
+		return false		
 	else
-		puts "thats not a recognized move, try something like [0,0]"
+		puts "that is not a recognized move"
 		return false	
 	end	
 end
 
-def get_players_move(board) # figure out how to test STDIN
+def get_players_move(board,placeholder) # figure out how to test STDIN
 	legal = false
 	while legal == false
-		answer = gets.strip.split; coords = []
+		answer = gets.strip.split(','); coords = []
 		answer.each do |el|
 			coords << el.to_i
 		end
-		legal = safe_value?(coords,board)		
+		legal = safe_value?(coords,board,placeholder)		
 	end
-	puts "coords: #{coords}, passed? #{safe_value?(coords,board)}"
 	return coords
 end
 

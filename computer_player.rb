@@ -171,7 +171,7 @@ def make_decision(player_1,player_2,placeholder,board,turn)
 	elsif center_available?(board,placeholder) # if center if available
 		board = make_move(board,player_2,[length/2,length/2]) # take it
 	elsif corners_available(board,placeholder)!=false&& turn == 2 # if corners are available
-		move = 	corners_available(board).shuffle![0]
+		move = 	corners_available(board,placeholder).shuffle![0]
 		board = make_move(board,player_2,move)		# take one
 	elsif be_aggressive(player_1,placeholder,board)# can make move on the same axis as opponent
 		move = be_aggressive(player_1,placeholder,board)	

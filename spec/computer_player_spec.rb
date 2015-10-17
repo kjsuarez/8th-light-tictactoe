@@ -92,3 +92,19 @@ describe "#be_aggressive" do
 		expect(choice).not_to  eql(nil)		 	
 	end
 end
+
+describe "#check_for" do
+	it "should describe a win as a 3 set of characters that aren't the placeholder" do
+		player = "x"; placeholder = "_"; 
+		set = ["x","x","x"]; set_index = [[0,0],[0,1],[0,2]]; 
+		length = 3; type = "win"
+		check = check_for(player,placeholder,set,set_index,length,type)
+
+		expect(check).to  eql(true)
+	end
+
+end
+
+
+
+

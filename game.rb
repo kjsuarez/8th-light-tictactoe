@@ -12,6 +12,22 @@ def example_board(length)
  	return true
 end
 
+def win_condition(turn,player_1,player_2,blank,board)
+	if turn == 10 && !won?(player_1,blank,board)&& !won?(player_2,blank,board)
+		puts "cats game"
+		return "cats game"
+	elsif won?(player_1,blank,board)
+		puts "you win!"
+		return "win"
+	elsif won?(player_2,blank,board)
+		puts "better luck next time"
+		return "lose"
+	else
+		puts "there was an error in win calculation"
+		return "error"			
+	end		
+end
+
 def play_tic_tac_toe
 	player_1 = "x"
 	player_2 = "o"
@@ -20,7 +36,7 @@ def play_tic_tac_toe
 	length = 3
 	board = generate_board(length,blank)
 	print "Welcome to Tic Tac Toe!\n"
-	print "you can make moves by inputing a pair of numbers\n"
+	print "you can make moves by inputing a pair of numbers, i.e. '1,2'\n"
 	print "those numbers correspond to these axis:\n"
 	example_board(length)
 	puts "\nok good luck!"
@@ -29,7 +45,7 @@ def play_tic_tac_toe
 	while (turn<=9 && !won?(player_1,blank,board)&& !won?(player_2,blank,board))
 		puts "your turn"
 		if turn%2 != 0 	# if turn is odd 		# players turn
-			move = get_players_move(board);
+			move = get_players_move(board,blank);
 			board = make_move(board,player_1,move)
 			turn+=1
 			print_board(board)
@@ -45,16 +61,7 @@ def play_tic_tac_toe
 			print_board(board)
 		end
 	end
-	if turn == 10 && !won?(player_1,blank,board)&& !won?(player_2,blank,board)
-		puts "cats game"
-	elsif won?(player_1,blank,board)
-		puts "you win!"
-	elsif won?(player_2,blank,board)
-		puts "better luck next time"
-	else
-		puts "there was an error in win calculation"			
-	end	
+	win_condition(turn,player_1,player_2,blank,board)
 end
 
 
-#play_tic_tac_toe

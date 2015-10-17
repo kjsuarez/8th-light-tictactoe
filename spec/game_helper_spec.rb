@@ -53,28 +53,28 @@ describe "#won? function" do
 end
 
 describe "#safe_value?" do
-	it "returns true if value is to value array" do
+	it "returns true if value is equal to value array" do
 		test = [2,2]
 		board = [["o","o","_"],
 		 		 ["o","x","_"],
 		 		 ["x","_","_"]]
-		try = safe_value?(test,board)
+		try = safe_value?(test,board,"_")
 		expect(try).to eql(true)
 	end
-	it "should return flase if array is to big" do
+	it "should return false if array is less than zero" do
 		test = [0,-2]
 		board = [["o","o","_"],
 		 		 ["o","x","_"],
 		 		 ["x","_","_"]]
-		try = safe_value?(test,board)
+		try = safe_value?(test,board,"_")
 		expect(try).to eql(false)		
 	end
 	it "should return false if array is to big" do
-		test = [3,3]
+		test = [3,2]
 		board = [["o","o","_"],
 		 		 ["o","x","_"],
 		 		 ["x","_","_"]]
-		try = safe_value?(test,board)
+		try = safe_value?(test,board,"_")
 		expect(try).to eql(false)		
 	end
 end

@@ -200,3 +200,33 @@ def game_won?(board)
 	return won
 end
 
+def get_players_move(board)
+	legal = false
+	while legal == false
+		answer = gets.strip.downcase
+		responce = []
+		if answer == "up"||answer == "u"
+			responce = [0,1]; legal = legal?(board,0,1)
+		elsif answer == "center"||answer == "c"
+			responce = [1,1]; legal = legal?(board,1,1)		
+		elsif answer == "down"||answer == "d"
+			responce = [2,1]; legal = legal?(board,2,1)
+		elsif answer == "left"||answer == "l"
+			responce = [1,0]; legal = legal?(board,1,0)
+		elsif answer == "right"||answer == "r"
+			responce = [1,2]; legal = legal?(board,1,2)
+		elsif answer == "up right"||answer == "ur"||answer == "right up"||answer == "ru"
+			responce = [0,2]; legal = legal?(board,0,2)
+		elsif answer == "up left"||answer == "ul"||answer == "left up"||answer == "lu"
+			responce = [0,0]; legal = legal?(board,0,0)
+		elsif answer == "down right"||answer == "dr"||answer == "right down"||answer == "rd"
+			responce = [2,2]; legal = legal?(board,2,2)
+		elsif answer == "down left"||answer == "dl"||answer == "left down"||answer == "ld"
+			responce = [2,0]; legal = legal?(board,2,0)													
+		else
+			puts "I'm sorry that's not a recognized responce, try again"
+		end
+	end
+	return responce
+end
+

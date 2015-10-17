@@ -15,7 +15,7 @@ describe "#won? function" do
 		board = [["o","_","x"],
 		 		 ["o","x","_"],
 		 		 ["x","_","_"]]
-		did_we_win = won?("x",board)
+		did_we_win = won?("x","_",board)
 		expect(did_we_win).to eql(true) 		 
 	end
 
@@ -23,7 +23,7 @@ describe "#won? function" do
 		board = [["o","_","x"],
 		 		 ["o","o","_"],
 		 		 ["x","_","o"]]
-		did_we_win = won?("o",board)
+		did_we_win = won?("o","_",board)
 		expect(did_we_win).to eql(true) 		 
 	end	
 
@@ -31,7 +31,7 @@ describe "#won? function" do
 		board = [["o","_","x"],
 		 		 ["o","x","_"],
 		 		 ["o","_","_"]]
-		did_we_win = won?("o",board)
+		did_we_win = won?("o","_",board)
 		expect(did_we_win).to eql(true) 		 
 	end
 
@@ -39,7 +39,7 @@ describe "#won? function" do
 		board = [["_","_","x"],
 		 		 ["o","o","o"],
 		 		 ["o","_","o"]]
-		did_we_win = won?("o",board)
+		did_we_win = won?("o","_",board)
 		expect(did_we_win).to eql(true) 		 
 	end
 
@@ -47,10 +47,53 @@ describe "#won? function" do
 		board = [["o","o","_"],
 		 		 ["o","x","_"],
 		 		 ["x","_","_"]]
-		did_we_win = won?("x",board)
+		did_we_win = won?("x","_",board)
 		expect(did_we_win).to eql(false) 		
 	end
 end
+
+describe "#safe_value?" do
+	it "returns true if value is to value array" do
+		test = [2,2]
+		board = [["o","o","_"],
+		 		 ["o","x","_"],
+		 		 ["x","_","_"]]
+		try = safe_value?(test,board)
+		expect(try).to eql(true)
+	end
+	it "should return flase if array is to big" do
+		test = [0,-2]
+		board = [["o","o","_"],
+		 		 ["o","x","_"],
+		 		 ["x","_","_"]]
+		try = safe_value?(test,board)
+		expect(try).to eql(false)		
+	end
+	it "should return false if array is to big" do
+		test = [3,3]
+		board = [["o","o","_"],
+		 		 ["o","x","_"],
+		 		 ["x","_","_"]]
+		try = safe_value?(test,board)
+		expect(try).to eql(false)		
+	end
+end
+
+describe "#make_move" do
+	it "should fill the specified cell with your symbol" do
+		board = [["o","o","_"],
+		 		 ["o","x","_"],
+		 		 ["x","_","_"]]
+		board = make_move(board, "x", [0,2]) 	
+		
+		expect(board).to eql([["o","o","x"],
+		 		 			  ["o","x","_"],
+		 		 			  ["x","_","_"]])	 
+	end
+end
+
+
+
 
 
 

@@ -20,7 +20,7 @@ def print_board(board) 	# prints the current board to the console
  	return true
 end 
 
-def generate_board(length,placeholder)
+def generate_board(length,placeholder) # tested
 	board = []
 	length.times do |n|
 		row = []
@@ -32,58 +32,34 @@ def generate_board(length,placeholder)
 	return board
 end
 
-def moves_left(board)
-	count = 0
-	array = board.flatten
-	array.each do |cell|
-		if cell == "_"
-			count +=1
-		end
-	end
-	return count
-end
-
-def legal?(board,y,x)
-	if board[y][x] == "_"
+def safe_value?(coords,board) # tested
+	if coords.length == 2 &&
+		coords[0] < board.length &&
+		coords[0] >= 0 &&
+		coords[1] < board.length &&
+		coords[1] >= 0	
 		return true
 	else
-		puts "that's an illegal move"
-		return false
-	end
+		puts "thats not a recognized move, try something like [0,0]"
+		return false	
+	end	
 end
 
-def get_players_move(board)
+def get_players_move(board) # figure out how to test STDIN
 	legal = false
 	while legal == false
-		answer = gets.strip.downcase
-		responce = []
-		if answer == "up"||answer == "u"
-			responce = [0,1]; legal = legal?(board,0,1)
-		elsif answer == "center"||answer == "c"
-			responce = [1,1]; legal = legal?(board,1,1)		
-		elsif answer == "down"||answer == "d"
-			responce = [2,1]; legal = legal?(board,2,1)
-		elsif answer == "left"||answer == "l"
-			responce = [1,0]; legal = legal?(board,1,0)
-		elsif answer == "right"||answer == "r"
-			responce = [1,2]; legal = legal?(board,1,2)
-		elsif answer == "up right"||answer == "ur"||answer == "right up"||answer == "ru"
-			responce = [0,2]; legal = legal?(board,0,2)
-		elsif answer == "up left"||answer == "ul"||answer == "left up"||answer == "lu"
-			responce = [0,0]; legal = legal?(board,0,0)
-		elsif answer == "down right"||answer == "dr"||answer == "right down"||answer == "rd"
-			responce = [2,2]; legal = legal?(board,2,2)
-		elsif answer == "down left"||answer == "dl"||answer == "left down"||answer == "ld"
-			responce = [2,0]; legal = legal?(board,2,0)													
-		else
-			puts "I'm sorry that's not a recognized responce, try again"
+		answer = gets.strip.split; coords = []
+		answer.each do |el|
+			coords << el.to_i
 		end
+		legal = safe_value?(coords,board)		
 	end
-	return responce
+	puts "coords: #{coords}, passed? #{safe_value?(coords,board)}"
+	return coords
 end
 
-def make_move(board, player, space) # to be replaced in board class
-	x = space[1]; y = space[0]
+def make_move(board, player, cell) # tested
+	x = cell[1]; y = cell[0]
 	board[y][x] = player
 	return board
 end

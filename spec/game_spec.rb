@@ -8,11 +8,3 @@ describe "smoke test" do
   end	
 end
 
-describe Board do
-	it "should pass" do
-		placeholder = ""
-		board = Board.new(placeholder)
-		x = board.smoke_test
-		expect(x).to eql(true)
-	end
-end

@@ -6,7 +6,7 @@ describe "#could_win_straight?" do
 		board = [["x","o","x"],
 		 		 ["_","x","_"],
 		 		 ["x","_","o"]]
-		answer = could_win_straight?("x","vertically",board) 
+		answer = could_win_straight?("x","_","vertically",board) 
 		expect(answer).to eql([1,0])		 
 	end
 
@@ -14,7 +14,7 @@ describe "#could_win_straight?" do
 		board = [["_","o","o"],
 		 		 ["o","x","_"],
 		 		 ["x","_","x"]]
-		answer = could_win_straight?("x","vertically",board) 
+		answer = could_win_straight?("x","_","vertically",board) 
 		expect(answer).to eql(false)			
 	end
 
@@ -22,7 +22,7 @@ describe "#could_win_straight?" do
 		board = [["x","_","x"],
 		 		 ["_","x","_"],
 		 		 ["x","_","o"]]
-		answer = could_win_straight?("x","horozontally",board) 
+		answer = could_win_straight?("x","_","horozontally",board) 
 		expect(answer).to eql([0,1])			
 	end
 
@@ -30,7 +30,7 @@ describe "#could_win_straight?" do
 		board = [["x","o","o"],
 		 		 ["o","x","_"],
 		 		 ["x","o","x"]]
-		answer = could_win_straight?("x","horozontally",board) 
+		answer = could_win_straight?("x","_","horozontally",board) 
 		expect(answer).to eql(false)			
 	end
 end		
@@ -41,7 +41,7 @@ describe "#could_win_diagonally?" do
 		board = [["o","_","x"],
 		 		 ["o","_","_"],
 		 		 ["x","_","o"]]
-		answer = could_win_diagonally?("x","diagonal-left",board) 
+		answer = could_win_diagonally?("x","_","diagonal-left",board) 
 		expect(answer).to eql([1,1])			
 	end
 
@@ -49,7 +49,7 @@ describe "#could_win_diagonally?" do
 		board = [["_","o","o"],
 		 		 ["o","_","_"],
 		 		 ["x","_","x"]]
-		answer = could_win_diagonally?("x","diagonal-left",board) 
+		answer = could_win_diagonally?("x","_","diagonal-left",board) 
 		expect(answer).to eql(false)			
 	end
 
@@ -57,7 +57,7 @@ describe "#could_win_diagonally?" do
 		board = [["o","_","x"],
 		 		 ["o","o","_"],
 		 		 ["x","_","_"]]
-		answer = could_win_diagonally?("o","diagonal-right",board) 
+		answer = could_win_diagonally?("o","_","diagonal-right",board) 
 		expect(answer).to eql([2,2])				
 	end	
 
@@ -65,7 +65,7 @@ describe "#could_win_diagonally?" do
 		board = [["_","o","o"],
 		 		 ["o","o","_"],
 		 		 ["x","_","x"]]
-		answer = could_win_diagonally?("x","diagonal-right",board) 
+		answer = could_win_diagonally?("x","_","diagonal-right",board) 
 		expect(answer).to eql(false)			
 	end		
 end	
@@ -76,7 +76,19 @@ describe "#could_win?" do
 		 		 ["o","_","_"],
 		 		 ["x","_","_"]]
 
-		expect(could_win?("x",board)).not_to  eql(false)
-		expect(could_win?("o",board)).to  eql(false) 		 		
+		expect(could_win?("x","_",board)).not_to  eql(false)
+		expect(could_win?("o","_",board)).to  eql(false) 		 		
+	end
+end
+
+describe "#be_aggressive" do
+	it "should return a vacant space on opponents axis" do
+		board = [["_","x","_"],
+		 		 ["_","o","x"],
+		 		 ["_","_","_"]]	
+
+		choice = be_aggressive("x","_",board)
+		expect(choice).not_to  eql(false)
+		expect(choice).not_to  eql(nil)		 	
 	end
 end
